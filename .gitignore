@@ -1,0 +1,26 @@
+# Binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binaries
+*.test
+
+# Output of the go coverage tool, specifically when run with the -o option
+*.out
+
+# Dependency directories (remove the comment below if you do not commit vendor)
+# vendor/
+
+# IDEs and editors
+.vscode/
+.idea/
+.github/
+
+# Local database
+warung.db
+
+# Log files
+*.log

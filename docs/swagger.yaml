@@ -1,0 +1,272 @@
+basePath: /
+definitions:
+  api.CreateOrderRequest:
+    properties:
+      customer_name:
+        type: string
+      items:
+        items:
+          $ref: '#/definitions/api.OrderItemRequest'
+        type: array
+    type: object
+  api.OrderItemRequest:
+    properties:
+      quantity:
+        type: integer
+      stock_id:
+        type: integer
+    type: object
+  entity.Order:
+    properties:
+      customer_name:
+        type: string
+      id:
+        type: integer
+      items:
+        items:
+          $ref: '#/definitions/entity.OrderItem'
+        type: array
+      order_date:
+        type: string
+      total_amount:
+        type: number
+    type: object
+  entity.OrderItem:
+    properties:
+      id:
+        type: integer
+      order_id:
+        type: integer
+      price:
+        description: Harga per item saat pesanan dibuat
+        type: number
+      quantity:
+        type: integer
+      stock_id:
+        type: integer
+    type: object
+  entity.Stock:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      price:
+        type: number
+      quantity:
+        type: integer
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: This is a sample server for a warung online.
+  title: Warung Online API
+  version: "1.0"
+paths:
+  /orders:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of orders
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.Order'
+            type: array
+      summary: List orders
+      tags:
+      - orders
+    post:
+      consumes:
+      - application/json
+      description: Create a new order with multiple items
+      parameters:
+      - description: Order Request
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/api.CreateOrderRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.Order'
+      summary: Create an order
+      tags:
+      - orders
+  /orders/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an order by ID
+      parameters:
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+      summary: Delete an order
+      tags:
+      - orders
+    get:
+      consumes:
+      - application/json
+      description: Get an order by ID
+      parameters:
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Order'
+      summary: Get an order
+      tags:
+      - orders
+    put:
+      consumes:
+      - application/json
+      description: Update an order by ID
+      parameters:
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Order
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Order'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Order'
+      summary: Update an order
+      tags:
+      - orders
+  /stocks:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of stocks
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.Stock'
+            type: array
+      summary: List stocks
+      tags:
+      - stocks
+    post:
+      consumes:
+      - application/json
+      description: Create a new stock
+      parameters:
+      - description: Stock
+        in: body
+        name: stock
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Stock'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.Stock'
+      summary: Create a stock
+      tags:
+      - stocks
+  /stocks/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a stock by ID
+      parameters:
+      - description: Stock ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+      summary: Delete a stock
+      tags:
+      - stocks
+    get:
+      consumes:
+      - application/json
+      description: Get a stock by ID
+      parameters:
+      - description: Stock ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Stock'
+      summary: Get a stock
+      tags:
+      - stocks
+    put:
+      consumes:
+      - application/json
+      description: Update a stock by ID
+      parameters:
+      - description: Stock ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Stock
+        in: body
+        name: stock
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Stock'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Stock'
+      summary: Update a stock
+      tags:
+      - stocks
+swagger: "2.0"

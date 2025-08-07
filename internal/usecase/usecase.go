@@ -46,9 +46,18 @@ func (u *orderUsecase) CreateOrder(order entity.Order) (entity.Order, error) {
 
 	// Kurangi stok
 	for _, item := range createdOrder.Items {
-		stock, _ := u.stockRepo.GetStock(item.StockID)
+		stock, err := u.stockRepo.GetStock(item.StockID)
+		if err != nil {
+			return createdOrder, errors.New("failed to get stock for update")
+		}
 		stock.Quantity -= item.Quantity
-		u.stockRepo.UpdateStock(item.StockID, stock)
+		_, err = u.stockRepo.UpdateStock(item.StockID, stock)
+		if err != nil {
+			// Here we have an inconsistent state. Order is created, but stock update failed.
+			// A transaction would be the best way to handle this.
+			// For now, returning an error is better than nothing.
+			return createdOrder, errors.New("failed to update stock, inconsistent data")
+		}
 	}
 
 	return createdOrder, nil
